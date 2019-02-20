@@ -100,7 +100,7 @@ class DigitalWalletTransaction {
 
     private void checkAmount(int amount) throws TransactionException {
         if (amount <= 0) {
-            throw new TransactionException("Amount should be greater than zero", "INVALID_AMOUNT");
+            throw new TransactionException("Amount should be greater then zero", "INVALID_AMOUNT");
         }
     }
 
@@ -111,6 +111,25 @@ class DigitalWalletTransaction {
     }
 
 }
+
+/** input values
+ *
+ * 2
+ * 1 Julia bff834a2c117a76d9ceb782f98e428686ca3c4ea
+ * 2 Samantha
+ * 10
+ * 1 pay 50
+ * 1 add 100
+ * 1 add 0
+ * 1 pay 30
+ * 2 add 500
+ * 1 add -5
+ * 1 add 1000
+ * 1 pay -20
+ * 1 pay 100
+ * 1 add 720
+ *
+ */
 
 public class Solution {
 
