@@ -1,17 +1,13 @@
 /**
  * Created by Victor Wardi - @vwardi on 19/02/2019
  **/
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 
-/*
- * Create TransactionException, DigitalWallet, and DigitalWalletTransaction classes here.
- */
-
-
-class TransactionException extends Exception{
+class TransactionException extends Exception {
 
     private String errorMessage;
     private String errorCode;
@@ -21,24 +17,17 @@ class TransactionException extends Exception{
         this.errorCode = errorCode;
     }
 
-    public String getErrorMessage() {
+    public String getMessage() {
         return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
     }
 
     public String getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
 }
 
-class DigitalWallet{
+class DigitalWallet {
 
     private String walletId;
     private String userName;
@@ -60,27 +49,11 @@ class DigitalWallet{
         return walletId;
     }
 
-    public void setWalletId(String walletId) {
-        this.walletId = walletId;
-    }
-
     public String getUsername() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getUserAccessCode() {
-        return userAccessCode;
-    }
-
-    public void setUserAccessCode(String userAccessCode) {
-        this.userAccessCode = userAccessCode;
-    }
-
-    public String getUserAccessToken() {
         return userAccessCode;
     }
 
@@ -89,30 +62,65 @@ class DigitalWallet{
     }
 
     public void setWalletBalance(int walletBalance) {
-        this.walletBalance = walletBalance;
+        this.walletBalance = this.walletBalance + walletBalance;
     }
 }
 
-class DigitalWalletTransaction{
+class DigitalWalletTransaction {
 
 
-    public void addMoney(DigitalWallet digitalWallet, int amount) throws TransactionException{
+    public void addMoney(DigitalWallet digitalWallet, int amount) throws TransactionException {
+
+        checkUserAccess(digitalWallet);
+
+        checkAmount(amount);
+
+        digitalWallet.setWalletBalance(amount);
 
     }
 
-    public void payMoney(DigitalWallet digitalWallet, int amount) throws TransactionException{
 
+    public void payMoney(DigitalWallet digitalWallet, int amount) throws TransactionException {
+
+        checkUserAccess(digitalWallet);
+
+        checkAmount(amount);
+
+        checkBalance(amount, digitalWallet.getWalletBalance());
+
+        digitalWallet.setWalletBalance(-amount);
+
+    }
+
+    private void checkUserAccess(DigitalWallet digitalWallet) throws TransactionException {
+        if (digitalWallet.getUserAccessCode() == null || digitalWallet.getUserAccessCode().isEmpty()) {
+            throw new TransactionException("User not authorized", "USER_NOT_AUTHORIZED");
+        }
+    }
+
+    private void checkAmount(int amount) throws TransactionException {
+        if (amount <= 0) {
+            throw new TransactionException("Amount should be greater than zero", "INVALID_AMOUNT");
+        }
+    }
+
+    private void checkBalance(int payment, int balance) throws TransactionException {
+        if (payment > balance) {
+            throw new TransactionException("Insufficient balance", "INSUFFICIENT_BALANCE");
+        }
     }
 
 }
 
 public class Solution {
+
     private static final Scanner INPUT_READER = new Scanner(System.in);
     private static final DigitalWalletTransaction DIGITAL_WALLET_TRANSACTION = new DigitalWalletTransaction();
 
     private static final Map<String, DigitalWallet> DIGITAL_WALLETS = new HashMap<>();
 
     public static void main(String[] args) {
+
         int numberOfWallets = Integer.parseInt(INPUT_READER.nextLine());
         while (numberOfWallets-- > 0) {
             String[] wallet = INPUT_READER.nextLine().split(" ");
@@ -129,7 +137,9 @@ public class Solution {
 
         int numberOfTransactions = Integer.parseInt(INPUT_READER.nextLine());
         while (numberOfTransactions-- > 0) {
-            String[] transaction = INPUT_READER.nextLine().split(" ");
+
+            String line = INPUT_READER.nextLine();
+            String[] transaction = line.split(" ");
             DigitalWallet digitalWallet = DIGITAL_WALLETS.get(transaction[0]);
 
             if (transaction[1].equals("add")) {
