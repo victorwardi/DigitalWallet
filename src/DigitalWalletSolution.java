@@ -131,7 +131,7 @@ class DigitalWalletTransaction {
  *
  */
 
-public class Solution {
+public class DigitalWalletSolution {
 
     private static final Scanner INPUT_READER = new Scanner(System.in);
     private static final DigitalWalletTransaction DIGITAL_WALLET_TRANSACTION = new DigitalWalletTransaction();
