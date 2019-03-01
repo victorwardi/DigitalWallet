@@ -141,16 +141,28 @@ public class WorkHours {
 
     }
 
-    static String maxWorkHourDay(int maxHoursDay, int availabeDays) {
+    static List<List> maxWorkHourDay(int maxHoursDay, int availabeDays, List<List> output) {
+
+        List<List> days = new ArrayList<>();
 
 
-            String s = "";
         if (availabeDays != 0) {
-            return s + maxWorkHourDay(maxHoursDay , availabeDays - 1);
 
+            List<Integer> hours = new ArrayList<>();
+
+            for (int i = 0; i <= maxHoursDay; i++){
+                hours.add(i);
             }
 
-           return s;
+            List<List> lists = maxWorkHourDay(maxHoursDay, availabeDays - 1, days);
+
+            output.add(lists);
+
+
+
+        }
+
+           return output;
     }
 
     private static int factorial(int number) {
@@ -218,6 +230,10 @@ public class WorkHours {
 
 
     public static void main(String[] args) {
+
+        List<List> output = new ArrayList<>();
+
+        List<List> output2 = maxWorkHourDay(6, 4, output);
 
 
             int maxWorkHours = 8;
